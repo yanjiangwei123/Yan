@@ -1,0 +1,93 @@
+//////////////////////////////////////////////////////// java链表///////////////////////////////////////////////////////////////
+get(index)：获取链表中第 index 个节点的值。如果索引无效，则返回-1。
+addAtHead(val)：在链表的第一个元素之前添加一个值为 val 的节点。插入后，新节点将成为链表的第一个节点。
+addAtTail(val)：将值为 val 的节点追加到链表的最后一个元素。
+addAtIndex(index,val)：在链表中的第 index 个节点之前添加值为 val  的节点。如果 index 等于链表的长度，则该节点将附加到链表的末尾。如果 index 大于链表长度，则不会插入节点。如果index小于0，则在头部插入节点。
+deleteAtIndex(index)：如果索引 index 有效，则删除链表中的第 index 个节点。
+
+class Node  //创建节点类
+{
+    int value;
+    Node next;
+    
+    public Node(int value){
+        this.value = value;
+    }
+}
+
+class MyLinkedList {  //创建链表类
+    
+    public Node head;   // 定义一个头结点
+    public int length;   // 链表长度
+    
+    public MyLinkedList() // 初始化链表
+    {
+        head=new Node(-1);
+    }
+    
+    public int get(int index) {  // 实现
+        
+        if(index>=length || index<0) //先判断索引是否在范围内
+            return -1;
+        // 通过创建新节点指向此时链表的头结点 来找到index处的值   
+        Node temp = head;  
+        for(int i=0;i<=index;i++)
+            {
+                temp=temp.next;
+            }
+        return temp.value;
+    }
+    
+    public void addAtHead(int val) {
+        Node flag =new Node(val); //初始化新节点
+        flag.next=head.next; //新节点作为第一个节点 让新节点指向之前链表的头结点
+        head.next=flag; //让现在的头结点指向新节点
+        length++; //长度加一
+    }
+    
+    public void addAtTail(int val) {
+        Node flag =new Node(val);//初始化新节点
+        Node temp =head;   //代替头结点
+        for(int i=0;i<length;i++)
+            {
+                temp=temp.next; //利用循环指向最后一个节点
+            }
+        temp.next=flag; //将最后一个节点的指针指向新节点
+        length++;//长度加一
+    }
+    
+    public void addAtIndex(int index, int val) {
+        if(index > length) //大于长度不插入
+            return;
+        if(index == length)
+        { //等于长度则在尾部部插入
+            addAtTail(val);
+            return;
+        }
+        if(index < 0)
+            index = index+length+1; //小于0时，先让index归0，在整合到下面
+        Node current = head;  
+        for(int i = 0; i < index; i++) //使current为指向index节点的节点
+            {
+                current = current.next;
+            }
+        Node ptr = current.next; //让ptr成为index上的节点
+        Node temp = new Node(val); //初始化一个节点
+        current.next = temp; //进行逻辑交换
+        temp.next = ptr;
+        length ++;
+    }
+    
+    public void deleteAtIndex(int index) {
+       
+        if(index >= length || index < 0) // 判断是否在相应范围
+            return;
+        Node temp=head; //取一个新节点指向第一个节点
+        for(int i=0;i<index;i++)
+            {
+                temp=temp.next; //利用循环找到指向index处节点
+            }
+        temp.next=temp.next.next; //构造位置关系
+        length--;
+    }
+}
