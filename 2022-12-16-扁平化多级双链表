@@ -1,0 +1,47 @@
+// ////////////////////////////////////////////////扁平化已经存在的多级双链表，从其头节点开始递归处理////////////////////////////////////////////////////
+/*/
+    1. 在while循环中控制链表节点的遍历
+    2. 在if语句中控制链表的拼接
+*/ 
+
+
+class Solution {
+
+    public Node flatten(Node head) {
+
+        //初始化一个节点来标识当前头节点
+        Node New_head=new Node(-1);     
+        New_head.next=head;
+
+        //利用while循环控制每一级的横向行走
+        while(head!=null)
+        {
+            if(head.child==null)           //配合while循环，child为空时进入同级下一节点
+                {
+                    head=head.next;        //让while循环的关键
+                }
+            else                           //否则，进入下一级链表中
+                {
+                    Node Nnext=head.next;  //记录当前节点的下一节点
+
+                    //开始递归，进入下一级，如若还有第三级或以上，则继续递归
+                    Node flag=flatten(head.child); //递归传入的参数为节点的子指针，返回的参数是下一级的第一个节点
+
+                    head.next=flag;        //节点连接操作，将当前节点与下级第一个节点连接
+                    flag.prev=head;        //双连接
+                    head.child=null;       //同时将当前节点子指针置空
+
+                    while(flag.next!=null) //找到下一级的最后一个节点
+                    {flag=flag.next;}
+                    flag.next=Nnext;       //连接此节点与当前级的当前节点的下一个节点
+                    if (Nnext!=null)       //为了避免此节点为此级的最后一个节点，需要判空再构造节点连接，以免出错
+                        {Nnext.prev=flag;} //双连接
+
+                    //完成此节点的扁平化后，继续遍历当前级的下一个节点
+                    head=Nnext;            //让while循环的关键
+                }
+        }
+        return New_head.next;              //返回传入的头节点
+    }
+
+}
