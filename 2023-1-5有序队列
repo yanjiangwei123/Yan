@@ -1,0 +1,22 @@
+class Solution {
+	public String orderlyQueue(String s, int k) {
+        //先判断k=1的情况
+        if(k==1)
+        {
+            int n=s.length();  
+            String[] str=new String[n]; //new一个字符串数组存储移动的所有情况
+            for(int i=0;i<n;i++)
+            {
+                str[i]=s.substring(i+1)+s.substring(0,i+1); //利用substring()子字符串的提取和 +拼接 来实现移动的各种情况
+            }
+            Arrays.sort(str); //使用数组排序函数找到字典上最小的字符串
+            return str[0];    //返回第一个字符串
+        }
+        //k>1时，可满足得到任意的字符串组合，利用此思想，直接转换成字符数组排序即可
+        char[] arr=s.toCharArray(); //将字符串转换成字符数组
+        Arrays.sort(arr);           //将字符数组中的值按字典中的顺序排序
+        return String.valueOf(arr); //用String.valueOf()将字符数组变成字符串的表示形式
+        
+}
+
+}
