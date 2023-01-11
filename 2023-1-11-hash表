@@ -1,0 +1,51 @@
+class MyHashSet {
+    public static final int size =20; //开辟一个容量为20的hash表
+    public LinkedList[] linkedList;   //使用链表数组来存储hash值
+
+
+    public MyHashSet() { //初始化
+        
+        linkedList=new LinkedList[size];//初始化链表数组
+        for(int i=0;i<size;i++)
+        {
+        	linkedList[i]=new LinkedList<Integer>(); //分别初始化每一个链表
+        }
+    }
+    
+    public void add(int key) {
+        int newkey=hash(key);  //用hash函数来找到正确的位置
+        linkedList[newkey].addLast(key);//使用链表的addLast()方法来添加值
+    }
+    
+    public void remove(int key) { 
+        int newkey=hash(key);  //通过hash函数找到正确的位置
+            linkedList[newkey].remove(key); 
+      //再在链表中使用remove()函数找到与key值相同的第一个数并删除
+    }
+    
+    public boolean contains(int key) {
+        int newkey=hash(key);   //用hash函数来找到正确的位置
+        int length=linkedList[newkey].size(); //找到当前位置的链表的长度
+        for(int i=0;i<length;i++) 
+        {
+            if(linkedList[newkey].get(i)==key)
+            {//利用for循环来找到与key相同的值
+                return true; 
+            }
+        }
+        return false;
+    }
+
+    public static int hash(int key) { //一个简易的hash函数来找到key的位置
+        return key % size;
+    
+    }
+}
+
+/**
+ * Your MyHashSet object will be instantiated and called as such:
+ * MyHashSet obj = new MyHashSet();
+ * obj.add(key);
+ * obj.remove(key);
+ * boolean param_3 = obj.contains(key);
+ */
